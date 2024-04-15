@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  dev-postgres:
+    image: postgres:14.4-alpine
+    ports:
+      - 5438:5432
+    environment:
+      POSTGRES_USER: graphql_tasks_user
+      POSTGRES_PASSWORD: graphql_tasks_pass
+      POSTGRES_DB: graphql_tasks_db
+    restart: always
+    networks:
+      - lesson
+networks:
+  lesson:
