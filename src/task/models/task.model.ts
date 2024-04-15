@@ -1,8 +1,9 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Status } from '@prisma/client';
 
 @ObjectType()
 export class Task {
-  @Field()
+  @Field(() => Int)
   id: number;
 
   @Field()
@@ -12,8 +13,14 @@ export class Task {
   dueDate: string;
 
   @Field()
-  status: 'NOT_STARTED' | 'IN_PROGRESS' | 'COMPLETED';
+  status: Status;
 
   @Field({ nullable: true })
   description: string;
+
+  @Field()
+  createdAt: Date;
+
+  @Field()
+  updatedAt: Date;
 }
