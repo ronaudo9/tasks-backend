@@ -5,6 +5,7 @@ import { GqlAuthGuard } from './guards/gql-auth.guard';
 import { UseGuards } from '@nestjs/common';
 import { SignInInput } from './dto/signin.input';
 import { SignInContext } from './dto/SignInContext';
+import { Response } from 'express';
 
 @Resolver()
 export class AuthResolver {
@@ -15,7 +16,17 @@ export class AuthResolver {
   async signIn(
     @Args('signInInput') signInInput: SignInInput,
     @Context() context: SignInContext,
+    @Context('res') res: Response,
   ) {
-    return await this.authService.signIn(context.user);
+    const signInResponse = await this.authService.signIn(context.user);
+
+    res.cookie('token', signInResponse.accessToken, {
+      httpOnly: true,
+      secure: false,
+      sameSite: 'strict',
+      maxAge: 6 * 60 * 60 * 1000,
+    });
+
+    return signInResponse;
   }
 }
