@@ -22,6 +22,7 @@ export class AuthResolver {
 
     res.cookie('token', signInResponse.accessToken, {
       httpOnly: true,
+      //環境変数などを使用して動的に本番環境の場合のみsecureをtrueにする
       secure: false,
       sameSite: 'strict',
       maxAge: 6 * 60 * 60 * 1000,
